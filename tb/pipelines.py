@@ -8,4 +8,5 @@
 
 class TbPipeline(object):
     def process_item(self, item, spider):
+        # print(item['comment_url'])
         return item
