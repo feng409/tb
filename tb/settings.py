@@ -33,16 +33,33 @@ NEWSPIDER_MODULE = 'tb.spiders'
 #CONCURRENT_REQUESTS_PER_IP = 16
 
 # Disable cookies (enabled by default)
-# COOKIES_ENABLED = False
+COOKIES_ENABLED = True
+COOKIES_DEBUG = False
+
+COOKIE = {
+    'cna': 'ydYHEYpp4kcCAXQarxK6dIP9',
+    'otherx': 'e%3D1%26p%3D*%26s%3D0%26c%3D0%26f%3D0%26g%3D0%26t%3D0',
+    'enc': 'ovOhKwTFvD03bY%2BEjcb4qKukBRIH%2F4kT%2B%2B2sCNB9PJcKZEGjxn%2FSCKIdiMReDlUkwm7E8oVCfs%2BpA1%2BjJ1Wgeg%3D%3D',
+    'hng': 'CN%7Czh-CN%7CCNY%7C156',
+    'uc1': 'cookie14=UoTfKLNb36nxAQ%3D%3D',
+    't': '75a10d4e05fbed756c51ea7144d1a4f9',
+    'uc3': 'vt3=F8dBzrhPheyEtjjcV%2B0%3D&id2=Uoe1hgOxD1%2B6kQ%3D%3D&nk2=F5RHqQ7IP4NQJF94tt8%3D&lg2=WqG3DMC9VAQiUQ%3D%3D',
+    '_tb_token_': 'ed3d3379e1a1e',
+    'cookie2': '20e2c9040295e64a91c0888b1e87385a',
+    '_m_h5_tk': '6c51944c5539f96904a98a4ccccba34f_1533666447689',
+    '_m_h5_tk_enc': '49727615173eb8acd340a8c0cd921ef9',
+    'isg': 'BLCw5KQfn9rdJkJaZ2VX00DZgXfCUe8spE5t36oB6IveZVIPUglM0zQ3uC2gQEwb'
+}
 
 # Disable Telnet Console (enabled by default)
 #TELNETCONSOLE_ENABLED = False
 
 # Override the default request headers:
-# DEFAULT_REQUEST_HEADERS = {
-#   'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-#   'Accept-Language': 'en',
-# }
+DEFAULT_REQUEST_HEADERS = {
+  'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+  'Accept-Language': 'en',
+  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36 OPR/46.0.2597.39',
+}
 
 # Enable or disable spider middlewares
 # See https://doc.scrapy.org/en/latest/topics/spider-middleware.html
@@ -52,9 +69,9 @@ SPIDER_MIDDLEWARES = {
 
 # Enable or disable downloader middlewares
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
-#DOWNLOADER_MIDDLEWARES = {
-#    'tb.middlewares.TbDownloaderMiddleware': 543,
-#}
+DOWNLOADER_MIDDLEWARES = {
+   'tb.middlewares.ProxyMiddleware': 543,
+}
 
 # Enable or disable extensions
 # See https://doc.scrapy.org/en/latest/topics/extensions.html
