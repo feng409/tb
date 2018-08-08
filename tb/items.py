@@ -8,13 +8,56 @@
 import scrapy
 
 
-class TbItem(scrapy.Item):
+class Comment(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
-    pass
+    nickname = scrapy.Field()
+    content = scrapy.Field()
+    append_comment = scrapy.Field()
+    photos = scrapy.Field()
+    videos = scrapy.Field()
 
 
-class CommentItem(scrapy.Item):
+class TbCommentItem(scrapy.Item):
+    date = scrapy.Field()
+    shareInfo = scrapy.Field()
+    showDepositIcon = scrapy.Field()
+    o2oRate = scrapy.Field()
+    mainTradeId = scrapy.Field()
+    raterType = scrapy.Field()
+    validscore = scrapy.Field()
+    video = scrapy.Field()
+    photos = scrapy.Field()
+    content = scrapy.Field()
+    rateId = scrapy.Field()
+    spuRatting = scrapy.Field()
+    auction = scrapy.Field()
+    award = scrapy.Field()
+    rate = scrapy.Field()
+    creditFraudRule = scrapy.Field()
+    appendCanExplainable = scrapy.Field()
+    _from = scrapy.Field()
+    tag = scrapy.Field()
+    propertiesAvg = scrapy.Field()
+    reply = scrapy.Field()
+    dayAfterConfirm = scrapy.Field()
+    lastModifyFrom = scrapy.Field()
+    bidPriceMoney = scrapy.Field()
+    noQna = scrapy.Field()
+    promotionType = scrapy.Field()
+    vicious = scrapy.Field()
+    enableSNS = scrapy.Field()
+    appendList = scrapy.Field()
+    buyAmount = scrapy.Field()
+    showCuIcon = scrapy.Field()
+    serviceRate = scrapy.Field()
+    useful = scrapy.Field()
+    user = scrapy.Field()
+    append = scrapy.Field()
+    status = scrapy.Field()
+
+
+class TMallCommentItem(scrapy.Item):
     displayUserNick = scrapy.Field()  # 用户昵称
     rateContent = scrapy.Field()  # 评论内容
     rateDate = scrapy.Field()  # 评论日期 2017-10-14 12:47:04
