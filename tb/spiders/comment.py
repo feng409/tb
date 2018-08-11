@@ -10,7 +10,7 @@ URL_COMMENT_TMALL = 'https://rate.tmall.com/list_detail_rate.htm?itemId={item_id
 
 class CommentSpider(scrapy.Spider):
     name = 'comment'
-    start_urls = ['https://s.taobao.com/search?q=蟹老板&ie=utf8']
+    start_urls = ['https://s.taobao.com/search?q=蓝牙&ie=utf8']
 
     # def start_requests(self):
     #     item_id = 569440432502
@@ -24,21 +24,23 @@ class CommentSpider(scrapy.Spider):
     def parse(self, response):
         _ = re.findall('g_page_config = (\{.*\});', response.text)[0]
         data = json.loads(_)
+        limit = 3
         for shop in data['mods']['itemlist']['data']['auctions']:
             yield ShopItem(shop)
             # todo 根据不同店面parse
-            if 'tmall.com' in shop['comment_url']:
-                print(URL_COMMENT_TMALL.format(item_id=shop['nid'], user_id=shop['user_id']))
-                yield scrapy.Request(
-                    url=URL_COMMENT_TMALL.format(item_id=shop['nid'], user_id=shop['user_id'], current_page=1),
-                    callback=self.parse_comment_tmall,
-                    cookies=self.settings['COOKIE'],
-                    meta={'item_id': shop['nid', 'user_id': shop['user_id']]})
-            else:
-                yield scrapy.Request(
-                    URL_COMMENT_TAOBAO.format(item_id=shop['nid'], user_id=shop['user_id'], current_page=1),
-                    callback=self.parse_comment_taobao,
-                    meta={'item_id': shop['nid'], 'user_id': shop['user_id']})
+            if limit:
+                limit = limit - 1
+                if 'tmall.com' in shop['comment_url']:
+                    yield scrapy.Request(
+                        url=URL_COMMENT_TMALL.format(item_id=shop['nid'], user_id=shop['user_id'], current_page=1),
+                        callback=self.parse_comment_tmall,
+                        cookies=self.settings['COOKIE'],
+                        meta={'item_id': shop['nid'], 'user_id': shop['user_id']})
+                else:
+                    yield scrapy.Request(
+                        URL_COMMENT_TAOBAO.format(item_id=shop['nid'], user_id=shop['user_id'], current_page=1),
+                        callback=self.parse_comment_taobao,
+                        meta={'item_id': shop['nid'], 'user_id': shop['user_id']})
 
     def parse_comment_tmall(self, response):
         # 真特么有毒的返回，不是标准json的json

@@ -58,7 +58,6 @@ COOKIE = {
 DEFAULT_REQUEST_HEADERS = {
   'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
   'Accept-Language': 'en',
-  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36 OPR/46.0.2597.39',
 }
 
 # Enable or disable spider middlewares
@@ -82,10 +81,16 @@ DOWNLOADER_MIDDLEWARES = {
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'tb.pipelines.GoodPipeline': 300,
-    'tb.pipelines.ParsePipeline': 310,
-    'tb.pipelines.ContentPipeline': 320,
-    'tb.pipelines.LengthPipeline': 330,
+    'tb.pipelines.ShopPipeline': 500,  # 过滤掉店铺类型信息
+    'tb.pipelines.GoodPipeline': 600,  # 淘宝好评过滤
+    'tb.pipelines.ParsePipeline': 700,  # 转换为目标item
+    'tb.pipelines.ContentPipeline': 800,  # 默认评论过滤
+    'tb.pipelines.LengthPipeline': 900,  # 内容长度过滤
+}
+
+FEED_EXPORT_ENCODING = 'utf-8'
+FEED_EXPORTERS = {
+    'csv': 'tb.spiders.csv_item_exporter.CustomCsvItemExporter',
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

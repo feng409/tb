@@ -107,6 +107,8 @@ class TMallCommentItem(scrapy.Item):
 
 class ShopItem(scrapy.Item):
     i2iTags = scrapy.Field()
+    p4p = scrapy.Field()
+    p4pSameHeight = scrapy.Field()
     p4pTags = scrapy.Field()
     nid = scrapy.Field()
     category = scrapy.Field()
