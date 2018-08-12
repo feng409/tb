@@ -16,9 +16,17 @@ class Comment(scrapy.Item):
     append_comment = scrapy.Field()
     photos = scrapy.Field()
     videos = scrapy.Field()
+    # 店铺信息
+    goods_url = scrapy.Field()
+    goods_title = scrapy.Field()
 
 
 class TbCommentItem(scrapy.Item):
+    def __init__(self, values):
+        kw = {key: value for key, value in values.items() if key in TbCommentItem.__dict__['fields'].keys()}
+        super(TbCommentItem, self).__init__(kw)
+
+    shop = scrapy.Field()
     date = scrapy.Field()
     shareInfo = scrapy.Field()
     showDepositIcon = scrapy.Field()
@@ -58,6 +66,11 @@ class TbCommentItem(scrapy.Item):
 
 
 class TMallCommentItem(scrapy.Item):
+    def __init__(self, values):
+        kw = {key: value for key, value in values.items() if key in TMallCommentItem.__dict__['fields'].keys()}
+        super(TMallCommentItem, self).__init__(kw)
+
+    shop = scrapy.Field()
     displayUserNick = scrapy.Field()  # 用户昵称
     rateContent = scrapy.Field()  # 评论内容
     rateDate = scrapy.Field()  # 评论日期 2017-10-14 12:47:04
@@ -106,6 +119,10 @@ class TMallCommentItem(scrapy.Item):
 
 
 class ShopItem(scrapy.Item):
+    def __init__(self, values):
+        kw = {key: value for key, value in values.items() if key in ShopItem.__dict__['fields'].keys()}
+        super(ShopItem, self).__init__(kw)
+
     i2iTags = scrapy.Field()
     p4p = scrapy.Field()
     p4pSameHeight = scrapy.Field()
@@ -129,3 +146,4 @@ class ShopItem(scrapy.Item):
     comment_url = scrapy.Field()
     shopLink = scrapy.Field()
     risk = scrapy.Field()
+

@@ -1,11 +1,13 @@
 from scrapy.conf import settings
-from scrapy.contrib.exporter import CsvItemExporter
+from scrapy.exporters import CsvItemExporter
 
 
 class CustomCsvItemExporter(CsvItemExporter):
 
     def __init__(self, *args, **kwargs):
         fields_to_export = [
+            'goods_url',
+            'goods_title',
             'nickname',
             'content',
             'append_comment',

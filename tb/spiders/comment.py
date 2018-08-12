@@ -13,8 +13,8 @@ class CommentSpider(scrapy.Spider):
     start_urls = ['https://s.taobao.com/search?q=蓝牙&ie=utf8']
 
     # def start_requests(self):
-    #     item_id = 569440432502
-    #     user_id = 1733818373
+    #     item_id = 526349263514
+    #     user_id = 776875858
     #     return [scrapy.Request(
     #                 url=URL_COMMENT_TMALL.format(item_id=item_id, user_id=user_id, current_page=80),
     #                 callback=self.parse_comment_tmall,
@@ -26,21 +26,22 @@ class CommentSpider(scrapy.Spider):
         data = json.loads(_)
         limit = 3
         for shop in data['mods']['itemlist']['data']['auctions']:
-            yield ShopItem(shop)
+            # yield ShopItem(shop)
             # todo 根据不同店面parse
             if limit:
                 limit = limit - 1
+                meta = {'shop': shop}
                 if 'tmall.com' in shop['comment_url']:
                     yield scrapy.Request(
                         url=URL_COMMENT_TMALL.format(item_id=shop['nid'], user_id=shop['user_id'], current_page=1),
                         callback=self.parse_comment_tmall,
                         cookies=self.settings['COOKIE'],
-                        meta={'item_id': shop['nid'], 'user_id': shop['user_id']})
+                        meta=meta)
                 else:
                     yield scrapy.Request(
                         URL_COMMENT_TAOBAO.format(item_id=shop['nid'], user_id=shop['user_id'], current_page=1),
                         callback=self.parse_comment_taobao,
-                        meta={'item_id': shop['nid'], 'user_id': shop['user_id']})
+                        meta=meta)
 
     def parse_comment_tmall(self, response):
         # 真特么有毒的返回，不是标准json的json
@@ -49,40 +50,40 @@ class CommentSpider(scrapy.Spider):
         for _ in data['rateDetail']['rateList']:
             _['_id'] = _['id']
             del _['id']
+            _['shop'] = response.meta['shop']
             item = TMallCommentItem(_)
-            print('tmail ->', _['rateContent'], end='\n\n')
             yield item
 
         # 抓取下一页
         current_page = int(data['rateDetail']['paginator']['page'])
         max_page = int(data['rateDetail']['paginator']['lastPage'])
         if current_page < max_page:
-            item_id = response.meta['item_id']
-            user_id = response.meta['user_id']
+            item_id = response.meta['shop']['nid']
+            user_id = response.meta['shop']['user_id']
             yield scrapy.Request(
                 url=URL_COMMENT_TMALL.format(item_id=item_id, user_id=user_id, current_page=current_page + 1),
                 callback=self.parse_comment_tmall,
                 cookies=self.settings['COOKIE'],
-                meta={'item_id': item_id, 'user_id': user_id})
+                meta=response.meta)
 
     def parse_comment_taobao(self, response):
         data = json.loads(response.text.strip()[1:-1])
         comments = data['comments']
         for comment in comments:
             comment['_from'] = comment['from']
+            comment['shop'] = response.meta['shop']
             del comment['from']
             item = TbCommentItem(comment)
             yield item
-
         # 抓取下一页
         current_page = int(data['currentPageNum'])
         max_page = int(data['maxPage'])
-        if current_page < max_page:
-            item_id = response.meta['item_id']
-            user_id = response.meta['user_id']
+        if current_page < max_page and False:
+            item_id = response.meta['shop']['nid']
+            user_id = response.meta['shop']['user_id']
             yield scrapy.Request(
                 url=URL_COMMENT_TAOBAO.format(item_id=item_id, user_id=user_id, current_page=current_page + 1),
                 callback=self.parse_comment_taobao,
                 cookies=self.settings['COOKIE'],
-                meta={'item_id': item_id, 'user_id': user_id})
+                meta=response.meta)
 

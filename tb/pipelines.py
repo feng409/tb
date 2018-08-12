@@ -27,17 +27,21 @@ class ParsePipeline(object):
             values['content'] = item['content']
             values['append_comment'] = ''
             values['photos'] = ['http:' + photo['url'] for photo in item['photos']]
-            values['videos'] = item['video']
+            values['videos'] = 'http:' + item['video']['cloudVideoUrl'] if item['video'] else ''
         elif isinstance(item, TMallCommentItem):
             values['nickname'] = item['displayUserNick']
             values['content'] = item['rateContent']
             values['photos'] = ['http:' + pic for pic in item['pics']]
-            if item.get('append_comment', None):
+            if item.get('appendComment', None):
                 values['append_comment'] = item['appendComment']['content']
-                if item['append_comment']['pics']:
-                    values['photos'] += item['append_comment']['pics']
+                if item['appendComment'].get('pics', None):
+                    values['photos'] += item['appendComment']['pics']
         if values['photos']:
             values['photos'] = '\n'.join(values['photos'])
+
+        # 妈的直通车链接自带https开头
+        values['goods_url'] = 'https:' + item['shop']['detail_url'] if item['shop']['detail_url'][:2] == '//' else item['shop']['detail_url']
+        values['goods_title'] = item['shop']['raw_title']
         return Comment(values)
 
 

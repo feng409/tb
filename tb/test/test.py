@@ -1,6 +1,12 @@
 import re
 
 
-with open('/tmp/response', 'r') as f:
-    response = f.readlines()
-    reg = re.findall(r'g_page_config = \\n', response)
+class A:
+    def __init__(self, *args, **kwargs):
+        print(args)
+        print(kwargs)
+        print(self)
+        super(A, self).__init__()
+
+
+A({'a': 1})
