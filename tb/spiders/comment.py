@@ -44,6 +44,7 @@ class CommentSpider(scrapy.Spider):
                         meta=meta)
 
     def parse_comment_tmall(self, response):
+        print(response.text)
         # 真特么有毒的返回，不是标准json的json
         data = json.loads('{%s}' % response.text.strip())
         # 过滤id关键字
@@ -67,6 +68,7 @@ class CommentSpider(scrapy.Spider):
                 meta=response.meta)
 
     def parse_comment_taobao(self, response):
+        print(response.text)
         data = json.loads(response.text.strip()[1:-1])
         comments = data['comments']
         for comment in comments:

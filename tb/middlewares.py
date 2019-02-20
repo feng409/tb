@@ -7,6 +7,12 @@
 
 from scrapy import signals
 from fake_useragent import UserAgent
+import requests
+
+
+def get_proxy():
+    proxy_pool = 'http://198.13.50.56:5010/get'
+    return requests.get(proxy_pool).text
 
 
 class TbSpiderMiddleware(object):
@@ -59,8 +65,11 @@ class TbSpiderMiddleware(object):
 
 class ProxyMiddleware(object):
     def process_request(self, request, spider):
-        ua = UserAgent()
-        request.headers['User-Agent'] = ua.random
+        proxy = get_proxy()
+        if request.url.startswith("http://"):
+            request.meta['proxy'] = "http://" + proxy
+        elif request.url.startswith("https://"):
+            request.meta['proxy'] = "http://" + proxy
 
 
 class CharlesMiddleware(object):
@@ -70,6 +79,11 @@ class CharlesMiddleware(object):
         elif request.url.startswith("https://"):
             request.meta['proxy'] = "http://localhost:2333"
 
+
+class UserAgentMiddleware(object):
+    def process_request(self, request, spider):
+        ua = UserAgent()
+        request.headers['User-Agent'] = ua.random
 
 class TbDownloaderMiddleware(object):
     # Not all methods need to be defined. If a method is not defined,
