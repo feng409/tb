@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import scrapy
+from scrapy.http.request import Request
 from tb.items import TMallCommentItem, TbCommentItem, ShopItem
 import json
 import re
@@ -10,16 +11,15 @@ URL_COMMENT_TMALL = 'https://rate.tmall.com/list_detail_rate.htm?itemId={item_id
 
 class CommentSpider(scrapy.Spider):
     name = 'comment'
-    start_urls = ['https://s.taobao.com/search?q=蓝牙&ie=utf8']
 
-    # def start_requests(self):
-    #     item_id = 526349263514
-    #     user_id = 776875858
-    #     return [scrapy.Request(
-    #                 url=URL_COMMENT_TMALL.format(item_id=item_id, user_id=user_id, current_page=80),
-    #                 callback=self.parse_comment_tmall,
-    #                 cookies=self.settings['COOKIE'],
-    #                 meta={'item_id': item_id, 'user_id': user_id})]
+    def __init__(self, keyword=None):
+        self.start_urls = [
+            'https://s.taobao.com/search?q=%s&ie=utf8' % keyword
+        ]
+
+    def start_requests(self):
+        for url in self.start_urls:
+            yield Request(url, cookies=self.settings['COOKIE'])
 
     def parse(self, response):
         _ = re.findall('g_page_config = (\{.*\});', response.text)[0]

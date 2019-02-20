@@ -6,8 +6,7 @@
 # https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
 from scrapy import signals
-from tb.user_agents import agents
-import random
+from fake_useragent import UserAgent
 
 
 class TbSpiderMiddleware(object):
@@ -60,7 +59,16 @@ class TbSpiderMiddleware(object):
 
 class ProxyMiddleware(object):
     def process_request(self, request, spider):
-        request.headers.setdefault('User-Agent', random.choice(agents))
+        ua = UserAgent()
+        request.headers['User-Agent'] = ua.random
+
+
+class CharlesMiddleware(object):
+    def process_request(self, request, spider):
+        if request.url.startswith("http://"):
+            request.meta['proxy'] = "http://localhost:2333"
+        elif request.url.startswith("https://"):
+            request.meta['proxy'] = "http://localhost:2333"
 
 
 class TbDownloaderMiddleware(object):
