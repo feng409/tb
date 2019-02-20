@@ -37,16 +37,22 @@ class CommentSpider(scrapy.Spider):
                         callback=self.parse_comment_tmall,
                         cookies=self.settings['COOKIE'],
                         meta=meta)
-                else:
-                    yield scrapy.Request(
-                        URL_COMMENT_TAOBAO.format(item_id=shop['nid'], user_id=shop['user_id'], current_page=1),
-                        callback=self.parse_comment_taobao,
-                        meta=meta)
+                # else:
+                #     yield scrapy.Request(
+                #         URL_COMMENT_TAOBAO.format(item_id=shop['nid'], user_id=shop['user_id'], current_page=1),
+                #         callback=self.parse_comment_taobao,
+                #         meta=meta)
 
     def parse_comment_tmall(self, response):
-        print(response.text)
         # 真特么有毒的返回，不是标准json的json
-        data = json.loads('{%s}' % response.text.strip())
+        try:
+            commments = response.text
+            # 过滤格式
+            commments = commments.replace('jsonp128(', '').replace(')', '')
+            data = json.loads(commments)
+        except Exception as e:
+            print(str(e))
+            return
         # 过滤id关键字
         for _ in data['rateDetail']['rateList']:
             _['_id'] = _['id']
