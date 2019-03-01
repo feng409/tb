@@ -19,6 +19,7 @@ class Comment(scrapy.Item):
     # 店铺信息
     goods_url = scrapy.Field()
     goods_title = scrapy.Field()
+    shop_id = scrapy.Field()
 
 
 class TbCommentItem(scrapy.Item):

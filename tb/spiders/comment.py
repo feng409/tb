@@ -4,6 +4,7 @@ from scrapy.http.request import Request
 from tb.items import TMallCommentItem, TbCommentItem, ShopItem
 import json
 import re
+import pymysql
 
 URL_COMMENT_TAOBAO = 'https://rate.taobao.com/feedRateList.htm?auctionNumId={item_id}&userNumId={user_id}&currentPageNum={current_page}&pageSize=20'
 URL_COMMENT_TMALL = 'https://rate.tmall.com/list_detail_rate.htm?itemId={item_id}&sellerId={user_id}&currentPage={current_page}&callback=jsonp128'
@@ -16,6 +17,9 @@ class CommentSpider(scrapy.Spider):
         self.start_urls = [
             'https://s.taobao.com/search?q=%s&ie=utf8' % keyword
         ]
+        from tb.settings import MYSQL_HOST, MYSQL_DB, MYSQL_USER, MYSQL_CHARSET, MYSQL_PASS
+        self.db = pymysql.connect(host=MYSQL_HOST, user=MYSQL_USER, password=MYSQL_PASS, db=MYSQL_DB, charset=MYSQL_CHARSET)
+        self.cursor = self.db.cursor()
 
     def start_requests(self):
         for url in self.start_urls:
@@ -63,9 +67,15 @@ class CommentSpider(scrapy.Spider):
             item = TMallCommentItem(_)
             yield item
 
+        # 限制一个店铺50条
+        count = self.get_count_from_nid(response.meta['shop']['nid'])
+        if count > 50:
+            return
+
         # 抓取下一页
         current_page = int(data['rateDetail']['paginator']['page'])
         max_page = int(data['rateDetail']['paginator']['lastPage'])
+        # 限制抓去5页
         if current_page < max_page:
             item_id = response.meta['shop']['nid']
             user_id = response.meta['shop']['user_id']
@@ -85,10 +95,16 @@ class CommentSpider(scrapy.Spider):
             del comment['from']
             item = TbCommentItem(comment)
             yield item
+
+        # 限制一个店铺50条
+        count = self.get_count_from_nid(response.meta['shop']['nid'])
+        if count > 50:
+            return
+
         # 抓取下一页
         current_page = int(data['currentPageNum'])
         max_page = int(data['maxPage'])
-        if current_page < max_page and False:
+        if current_page < max_page:
             item_id = response.meta['shop']['nid']
             user_id = response.meta['shop']['user_id']
             yield scrapy.Request(
@@ -97,3 +113,11 @@ class CommentSpider(scrapy.Spider):
                 cookies=self.settings['COOKIE'],
                 meta=response.meta)
 
+    def get_count_from_nid(self, nid):
+        sql = """select count(*) from comments where nid = %s"""
+        self.cursor.execute(sql, nid)
+        count, = self.cursor.fetchone()
+        return count
+
+    def close(spider, reason):
+        spider.db.close()

@@ -4,6 +4,12 @@ BOT_NAME = 'tb'
 SPIDER_MODULES = ['tb.spiders']
 NEWSPIDER_MODULE = 'tb.spiders'
 
+# DB Config
+MYSQL_HOST = 'localhost'
+MYSQL_USER = 'root'
+MYSQL_PASS = ''
+MYSQL_CHARSET = 'utf8mb4'
+MYSQL_DB = 'test'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.109 Safari/537.36'
@@ -17,7 +23,7 @@ CONCURRENT_REQUESTS = 1
 # Configure a delay for requests for the same website (default: 0)
 # See https://doc.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-DOWNLOAD_DELAY = 5
+DOWNLOAD_DELAY = 10
 # The download delay setting will honor only one of:
 CONCURRENT_REQUESTS_PER_DOMAIN = 1
 CONCURRENT_REQUESTS_PER_IP = 0
@@ -27,30 +33,31 @@ COOKIES_ENABLED = True
 COOKIES_DEBUG = True
 
 COOKIE = \
-    {'dnk': 'tb2892052_2013',
-     'hng': 'CN%7Czh-CN%7CCNY%7C156',
+    {'hng': 'CN%7Czh-CN%7CCNY%7C156',
      'lid': 'tb2892052_2013',
-     'cookie2': '1bd78ac3190955301641da94011cb6b8',
-     't': '64517359b01d22bde362490d52ee24c5',
-     '_tb_token_': 'e81e14bbe884e',
      'cna': '/iKFFMFiQyYCAXEK2ALQ/2K+',
-     '_m_h5_tk': '35c1f492643c62e1941ca33e955c0e3d_1550719810093',
-     '_m_h5_tk_enc': 'daa4533af4c63f23f8e498c84d4e2dac',
-     'uc1': 'cookie16=WqG3DMC9UpAPBHGz5QBErFxlCA%3D%3D&cookie21=V32FPkk%2FgihF%2FS5nr3O5&cookie15=V32FPkk%2Fw0dUvg%3D%3D&existShop=false&pas=0&cookie14=UoTZ5Ofw3zSWYA%3D%3D&tag=8&lng=zh_CN',
-     'uc3': 'vt3=F8dByEzd9EwBgai%2FHMk%3D&id2=Uoe1hgOxD1%2B6kQ%3D%3D&nk2=F5RHqQ7IP4NQJF94tt8%3D&lg2=V32FPkk%2Fw0dUvg%3D%3D',
+     't': '64517359b01d22bde362490d52ee24c5',
      'tracknick': 'tb2892052_2013',
-     '_l_g_': 'Ug%3D%3D',
-     'ck1': '""',
-     'unb': '1614550477',
      'lgc': 'tb2892052_2013',
+     '_tb_token_': 'f50fe8bf433ee',
+     'cookie2': '3c444e529ddd760d0b252a8a2cc802fa',
+     '_m_h5_tk': 'cf1a247130df565dbd758d26cd46862d_1551414331754',
+     '_m_h5_tk_enc': '223d57ee25fff3631e9f29563bf50c52',
+     'ck1': '""',
+     'uc1': 'cookie16=VFC%2FuZ9az08KUQ56dCrZDlbNdA%3D%3D&cookie21=VT5L2FSpccLuJBreK%2BBd&cookie15=UtASsssmOIJ0bQ%3D%3D&existShop=false&pas=0&cookie14=UoTZ5be3DUmHKA%3D%3D&tag=8&lng=zh_CN',
+     'uc3': 'vt3=F8dByEv0IX%2B7YFcgE%2BI%3D&id2=Uoe1hgOxD1%2B6kQ%3D%3D&nk2=F5RHqQ7IP4NQJF94tt8%3D&lg2=VFC%2FuZ9ayeYq2g%3D%3D',
+     '_l_g_': 'Ug%3D%3D',
+     'unb': '1614550477',
      'cookie1': 'WvLGliy5OCM9Js16RiEtjciJrry3Tk6rf%2BNAPo%2BIc2A%3D',
      'login': 'true',
      'cookie17': 'Uoe1hgOxD1%2B6kQ%3D%3D',
      '_nk_': 'tb2892052_2013',
      'uss': '""',
-     'csg': 'fbf57016',
-     'skt': '368767822bda148a',
-     'isg': 'BK2tdtxyjWLTX2mNpYpNZv-CvE8nCuHcEc-QqO-yz8SzZswYt1u2rKE0UHolZvmU'}
+     'csg': 'ea861cf1',
+     'skt': '645843c1a8f787d7',
+     'cq': 'ccp%3D0',
+     'pnm_cku822': '098%23E1hvQQvUvbpvUvCkvvvvvjiPRLzpsjiUPscW0jljPmP96jnhnL5Wlj1WPLq9tjDUiQhvChCvCCptvpvhphvvvvGCvvpvvPMMvphvCyCCvvvvvvyCvh12EKZvIThSoAxy64mAdc9D4Z7xfXeKNB9f8c76eBDgxmx%2FAj7JuLBV8ZJaK2Wtb6U24gcEIfwyp79nfwAKDVQEVAdpaXTAVAi684AxKphv8hCvvHQvvhCCphvpc9vvptEvpCQmvvChNhCvjvUvvhBDphvwv9vvBV7EvpvVpyUU2E%2BXuphvmhCvC8ZwpZ4C',
+     'isg': 'BFlZdQXSYbBRwz0xEVZRorOmaEPzTjbva1nD23sOxAD9gnkUwze6asaThAZROuXQ'}
 
 # Disable Telnet Console (enabled by default)
 #TELNETCONSOLE_ENABLED = False
@@ -90,6 +97,8 @@ ITEM_PIPELINES = {
     'tb.pipelines.ParsePipeline': 700,  # 转换为目标item
     'tb.pipelines.ContentPipeline': 800,  # 默认评论过滤
     'tb.pipelines.LengthPipeline': 900,  # 内容长度过滤
+
+    'tb.pipelines.MysqlPipeline': 1000,  # 保存至数据库
 }
 
 FEED_EXPORT_ENCODING = 'utf-8'
