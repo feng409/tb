@@ -115,8 +115,9 @@ class CommentSpider(scrapy.Spider):
 
     def get_count_from_nid(self, nid):
         sql = """select count(*) from comments where nid = %s"""
-        self.cursor.execute(sql, nid)
-        count, = self.cursor.fetchone()
+        with self.db.cursor() as cursor:
+            cursor.execute(sql, nid)
+            count, = cursor.fetchone()
         return count
 
     def close(spider, reason):

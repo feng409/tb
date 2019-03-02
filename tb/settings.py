@@ -23,7 +23,7 @@ CONCURRENT_REQUESTS = 1
 # Configure a delay for requests for the same website (default: 0)
 # See https://doc.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-DOWNLOAD_DELAY = 10
+DOWNLOAD_DELAY = 15
 # The download delay setting will honor only one of:
 CONCURRENT_REQUESTS_PER_DOMAIN = 1
 CONCURRENT_REQUESTS_PER_IP = 0
@@ -33,31 +33,38 @@ COOKIES_ENABLED = True
 COOKIES_DEBUG = True
 
 COOKIE = \
-    {'hng': 'CN%7Czh-CN%7CCNY%7C156',
-     'lid': 'tb2892052_2013',
-     'cna': '/iKFFMFiQyYCAXEK2ALQ/2K+',
-     't': '64517359b01d22bde362490d52ee24c5',
-     'tracknick': 'tb2892052_2013',
-     'lgc': 'tb2892052_2013',
-     '_tb_token_': 'f50fe8bf433ee',
-     'cookie2': '3c444e529ddd760d0b252a8a2cc802fa',
-     '_m_h5_tk': 'cf1a247130df565dbd758d26cd46862d_1551414331754',
-     '_m_h5_tk_enc': '223d57ee25fff3631e9f29563bf50c52',
-     'ck1': '""',
-     'uc1': 'cookie16=VFC%2FuZ9az08KUQ56dCrZDlbNdA%3D%3D&cookie21=VT5L2FSpccLuJBreK%2BBd&cookie15=UtASsssmOIJ0bQ%3D%3D&existShop=false&pas=0&cookie14=UoTZ5be3DUmHKA%3D%3D&tag=8&lng=zh_CN',
-     'uc3': 'vt3=F8dByEv0IX%2B7YFcgE%2BI%3D&id2=Uoe1hgOxD1%2B6kQ%3D%3D&nk2=F5RHqQ7IP4NQJF94tt8%3D&lg2=VFC%2FuZ9ayeYq2g%3D%3D',
+    {'JSESSIONID': 'BAC3D5DF95576CFA25C94018AC2CEC39',
+     '_cc_': 'Vq8l%2BKCLiw%3D%3D',
      '_l_g_': 'Ug%3D%3D',
-     'unb': '1614550477',
-     'cookie1': 'WvLGliy5OCM9Js16RiEtjciJrry3Tk6rf%2BNAPo%2BIc2A%3D',
-     'login': 'true',
-     'cookie17': 'Uoe1hgOxD1%2B6kQ%3D%3D',
+     '_m_h5_tk': '279858a7d74b3116fcdf4ad31ff5fdab_1551525641214',
+     '_m_h5_tk_enc': '0bef1561ba7dbe6b1e75bb8e6fff3944',
      '_nk_': 'tb2892052_2013',
-     'uss': '""',
-     'csg': 'ea861cf1',
-     'skt': '645843c1a8f787d7',
-     'cq': 'ccp%3D0',
-     'pnm_cku822': '098%23E1hvQQvUvbpvUvCkvvvvvjiPRLzpsjiUPscW0jljPmP96jnhnL5Wlj1WPLq9tjDUiQhvChCvCCptvpvhphvvvvGCvvpvvPMMvphvCyCCvvvvvvyCvh12EKZvIThSoAxy64mAdc9D4Z7xfXeKNB9f8c76eBDgxmx%2FAj7JuLBV8ZJaK2Wtb6U24gcEIfwyp79nfwAKDVQEVAdpaXTAVAi684AxKphv8hCvvHQvvhCCphvpc9vvptEvpCQmvvChNhCvjvUvvhBDphvwv9vvBV7EvpvVpyUU2E%2BXuphvmhCvC8ZwpZ4C',
-     'isg': 'BFlZdQXSYbBRwz0xEVZRorOmaEPzTjbva1nD23sOxAD9gnkUwze6asaThAZROuXQ'}
+     '_tb_token_': 'f346818bf87bd',
+     'alitrackid': 'world.taobao.com',
+     'cna': 'cnE2FIdhKXwCAcYNMjh9cNiL',
+     'cookie1': 'WvLGliy5OCM9Js16RiEtjciJrry3Tk6rf%2BNAPo%2BIc2A%3D',
+     'cookie17': 'Uoe1hgOxD1%2B6kQ%3D%3D',
+     'cookie2': '37ff44f2e0006280b218bb749fbf180f',
+     'csg': 'acf1876e',
+     'dnk': 'tb2892052_2013',
+     'enc': 'BE0z2APzU5Y1CBR5m%2BdpzeNurgvO5egFRqDU2YD4fiHgKWe3I4KiKPNe2wOekLc9BR%2F9vV1MW0ThVYwJXpQtEw%3D%3D',
+     'existShop': 'MTU1MTUxNzAxMQ%3D%3D',
+     'hng': 'JP%7Czh-CN%7CJPY%7C392',
+     'isg': 'BMfHK2APVySgqdO-mFU0QQlAVn1RZOAECoAw9Jm049Z9COfKoZwr_gXKr4jzu3Mm',
+     'l': 'bBNwfMzevHxkRTg5BOfwGuI-bTQtwIRbzjFzw4ZYfICPOKCpIypRWZaAKi89C3hVa6myR3oadEZ8B2TUoPaEQ',
+     'lastalitrackid': 'world.taobao.com',
+     'lgc': 'tb2892052_2013',
+     'mt': 'ci=12_1',
+     'sg': '374',
+     'skt': 'c2ac4049b05c0155',
+     't': '9f4ee4ae87be12aedd65433208136b17',
+     'tg': '0',
+     'thw': 'us',
+     'tracknick': 'tb2892052_2013',
+     'uc1': 'cookie16=VFC%2FuZ9az08KUQ56dCrZDlbNdA%3D%3D&cookie21=VT5L2FSpccLuJBreK%2BBd&cookie15=UIHiLt3xD8xYTw%3D%3D&existShop=false&pas=0&cookie14=UoTZ5bYgHLdMAg%3D%3D&tag=8&lng=zh_CN',
+     'uc3': 'vt3=F8dByEv1QD0QHJ0jsg4%3D&id2=Uoe1hgOxD1%2B6kQ%3D%3D&nk2=F5RHqQ7IP4NQJF94tt8%3D&lg2=VT5L2FSpMGV7TQ%3D%3D',
+     'unb': '1614550477',
+     'v': '0'}
 
 # Disable Telnet Console (enabled by default)
 #TELNETCONSOLE_ENABLED = False

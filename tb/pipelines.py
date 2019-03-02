@@ -7,6 +7,14 @@
 from tb.items import TbCommentItem, TMallCommentItem, Comment, ShopItem
 from scrapy.exceptions import DropItem
 import pymysql
+import json
+
+
+def jsonify(data):
+    if isinstance(data, (dict, tuple)):
+        return json.dumps(data)
+    else:
+        return str(data)
 
 
 class ShopPipeline(object):
@@ -78,14 +86,35 @@ class GoodPipeline(object):
 
 
 class MysqlPipeline(object):
+    """
+    sql:
+    CREATE TABLE `comments` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `goods_url` varchar(1024) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `goods_title` varchar(1024) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `nickname` varchar(40) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `content` varchar(1024) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `append_comment` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `videos` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `nid` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `photos` text COLLATE utf8mb4_general_ci,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7754 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+    """
     def process_item(self, item, spider):
         sql = """
         INSERT INTO `comments` (`nid`, `goods_url` , `goods_title`, `nickname`, `content`, `append_comment`, `videos`, `photos`) 
         VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
         
         """
-        self.cursor.execute(sql, [item.get(key, '') for key in ('shop_id,goods_url,goods_title,nickname,content,append_comment,videos,photos'.split(','))])
-        self.db.commit()
+        try:
+            self.cursor.execute(sql, [jsonify(item.get(key, '')) for key in ('shop_id,goods_url,goods_title,nickname,content,append_comment,videos,photos'.split(','))])
+            self.db.commit()
+        except Exception as e:
+            print(e)
+            print('异常SQL -> ', self.cursor._last_executed)
+        return item
 
     def open_spider(self, spider):
         print('''
