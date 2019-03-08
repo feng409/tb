@@ -5,11 +5,11 @@ SPIDER_MODULES = ['tb.spiders']
 NEWSPIDER_MODULE = 'tb.spiders'
 
 # DB Config
-MYSQL_HOST = 'localhost'
-MYSQL_USER = 'root'
-MYSQL_PASS = ''
+MYSQL_HOST = '198.13.50.56'
+MYSQL_USER = 'spider'
+MYSQL_PASS = 'spider'
 MYSQL_CHARSET = 'utf8mb4'
-MYSQL_DB = 'test'
+MYSQL_DB = 'spider'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.109 Safari/537.36'

@@ -8,6 +8,11 @@ from tb.items import TbCommentItem, TMallCommentItem, Comment, ShopItem
 from scrapy.exceptions import DropItem
 import pymysql
 import json
+import logging
+from contextlib import contextmanager
+
+
+_logger = logging.getLogger(__name__)
 
 
 def jsonify(data):
@@ -88,7 +93,7 @@ class GoodPipeline(object):
 class MysqlPipeline(object):
     """
     sql:
-    CREATE TABLE `comments` (
+CREATE TABLE `comments` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `goods_url` varchar(1024) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `goods_title` varchar(1024) COLLATE utf8mb4_general_ci DEFAULT NULL,
@@ -106,27 +111,31 @@ class MysqlPipeline(object):
         sql = """
         INSERT INTO `comments` (`nid`, `goods_url` , `goods_title`, `nickname`, `content`, `append_comment`, `videos`, `photos`) 
         VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-        
         """
         try:
-            self.cursor.execute(sql, [jsonify(item.get(key, '')) for key in ('shop_id,goods_url,goods_title,nickname,content,append_comment,videos,photos'.split(','))])
-            self.db.commit()
+            with self.connection() as conn:
+                cursor = conn.cursor()
+                cursor.execute(sql, [jsonify(item.get(key, '')) for key in ('shop_id,goods_url,goods_title,nickname,content,append_comment,videos,photos'.split(','))])
+                conn.commit()
         except Exception as e:
-            print(e)
-            print('异常SQL -> ', self.cursor._last_executed)
+            _logger.error(e)
+            _logger.debug('异常SQL -> ', self.cursor._last_executed)
         return item
 
     def open_spider(self, spider):
-        print('''
-        ##########################打开数据库###################
-        ''')
+        _logger.debug('##########################打开数据库################### ')
         from .settings import MYSQL_HOST, MYSQL_DB, MYSQL_USER, MYSQL_CHARSET, MYSQL_PASS
-        self.db = pymysql.connect(host=MYSQL_HOST, user=MYSQL_USER, password=MYSQL_PASS, db=MYSQL_DB, charset=MYSQL_CHARSET)
-        self.cursor = self.db.cursor()
+        from DBUtils.PooledDB import PooledDB
+        self.pool = PooledDB(pymysql, host=MYSQL_HOST, user=MYSQL_USER, password=MYSQL_PASS, db=MYSQL_DB, charset=MYSQL_CHARSET)
 
     def close_spider(self, spider):
-        print('''
-        ########################关闭数据库##################
-        ''')
-        self.db.close()
+        _logger.debug('########################关闭数据库################## ')
+        self.pool.close()
 
+    @contextmanager
+    def connection(self):
+        conn = self.pool.connection()
+        try:
+            yield conn
+        finally:
+            conn.close()

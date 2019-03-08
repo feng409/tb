@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from contextlib import contextmanager
+
 import scrapy
 from scrapy.http.request import Request
 from tb.items import TMallCommentItem, TbCommentItem, ShopItem
@@ -14,12 +16,13 @@ class CommentSpider(scrapy.Spider):
     name = 'comment'
 
     def __init__(self, keyword=None):
+        from tb.settings import MYSQL_HOST, MYSQL_DB, MYSQL_USER, MYSQL_CHARSET, MYSQL_PASS
+        from DBUtils.PooledDB import PooledDB
+        self.pool = PooledDB(pymysql, host=MYSQL_HOST, user=MYSQL_USER, password=MYSQL_PASS, db=MYSQL_DB, charset=MYSQL_CHARSET)
+
         self.start_urls = [
             'https://s.taobao.com/search?q=%s&ie=utf8' % keyword
         ]
-        from tb.settings import MYSQL_HOST, MYSQL_DB, MYSQL_USER, MYSQL_CHARSET, MYSQL_PASS
-        self.db = pymysql.connect(host=MYSQL_HOST, user=MYSQL_USER, password=MYSQL_PASS, db=MYSQL_DB, charset=MYSQL_CHARSET)
-        self.cursor = self.db.cursor()
 
     def start_requests(self):
         for url in self.start_urls:
@@ -115,10 +118,16 @@ class CommentSpider(scrapy.Spider):
 
     def get_count_from_nid(self, nid):
         sql = """select count(*) from comments where nid = %s"""
-        with self.db.cursor() as cursor:
+        with self.connection() as conn:
+            cursor = conn.cursor()
             cursor.execute(sql, nid)
             count, = cursor.fetchone()
         return count
 
-    def close(spider, reason):
-        spider.db.close()
+    @contextmanager
+    def connection(self):
+        conn = self.pool.connection()
+        try:
+            yield conn
+        finally:
+            conn.close()
