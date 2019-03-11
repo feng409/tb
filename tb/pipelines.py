@@ -124,9 +124,9 @@ CREATE TABLE `comments` (
 
     def open_spider(self, spider):
         _logger.debug('##########################打开数据库################### ')
-        from .settings import MYSQL_HOST, MYSQL_DB, MYSQL_USER, MYSQL_CHARSET, MYSQL_PASS
+        from .settings import MYSQL_HOST, MYSQL_DB, MYSQL_USER, MYSQL_CHARSET, MYSQL_PASS, MYSQL_PORT
         from DBUtils.PooledDB import PooledDB
-        self.pool = PooledDB(pymysql, host=MYSQL_HOST, user=MYSQL_USER, password=MYSQL_PASS, db=MYSQL_DB, charset=MYSQL_CHARSET)
+        self.pool = PooledDB(pymysql, host=MYSQL_HOST, user=MYSQL_USER, password=MYSQL_PASS, port=MYSQL_PORT, db=MYSQL_DB, charset=MYSQL_CHARSET)
 
     def close_spider(self, spider):
         _logger.debug('########################关闭数据库################## ')

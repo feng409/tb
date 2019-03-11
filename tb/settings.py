@@ -5,11 +5,12 @@ SPIDER_MODULES = ['tb.spiders']
 NEWSPIDER_MODULE = 'tb.spiders'
 
 # DB Config
-MYSQL_HOST = '198.13.50.56'
-MYSQL_USER = 'spider'
-MYSQL_PASS = 'spider'
-MYSQL_CHARSET = 'utf8mb4'
-MYSQL_DB = 'spider'
+MYSQL_HOST = ''
+MYSQL_USER = ''
+MYSQL_PASS = ''
+MYSQL_CHARSET = ''
+MYSQL_DB = ''
+MYSQL_PORT = ''
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.109 Safari/537.36'
@@ -23,7 +24,7 @@ CONCURRENT_REQUESTS = 1
 # Configure a delay for requests for the same website (default: 0)
 # See https://doc.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-DOWNLOAD_DELAY = 15
+DOWNLOAD_DELAY = 5
 # The download delay setting will honor only one of:
 CONCURRENT_REQUESTS_PER_DOMAIN = 1
 CONCURRENT_REQUESTS_PER_IP = 0

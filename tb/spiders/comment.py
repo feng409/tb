@@ -16,9 +16,9 @@ class CommentSpider(scrapy.Spider):
     name = 'comment'
 
     def __init__(self, keyword=None):
-        from tb.settings import MYSQL_HOST, MYSQL_DB, MYSQL_USER, MYSQL_CHARSET, MYSQL_PASS
+        from tb.settings import MYSQL_HOST, MYSQL_DB, MYSQL_USER, MYSQL_CHARSET, MYSQL_PASS, MYSQL_PORT
         from DBUtils.PooledDB import PooledDB
-        self.pool = PooledDB(pymysql, host=MYSQL_HOST, user=MYSQL_USER, password=MYSQL_PASS, db=MYSQL_DB, charset=MYSQL_CHARSET)
+        self.pool = PooledDB(pymysql, host=MYSQL_HOST, user=MYSQL_USER, password=MYSQL_PASS, db=MYSQL_DB, charset=MYSQL_CHARSET, port=MYSQL_PORT)
 
         self.start_urls = [
             'https://s.taobao.com/search?q=%s&ie=utf8' % keyword
